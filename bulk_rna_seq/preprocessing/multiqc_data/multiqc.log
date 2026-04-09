@@ -1,0 +1,19 @@
+[2023-03-09 13:52:19,315] multiqc                                            [DEBUG  ]  This is MultiQC v1.13
+[2023-03-09 13:52:19,316] multiqc                                            [DEBUG  ]  Command used: /usr/bin/multiqc ./fastqc
+[2023-03-09 13:52:20,115] multiqc                                            [WARNING]  MultiQC Version v1.14 now available!
+[2023-03-09 13:52:20,116] multiqc                                            [DEBUG  ]  Working dir : /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038
+[2023-03-09 13:52:20,116] multiqc                                            [DEBUG  ]  Template    : default
+[2023-03-09 13:52:20,116] multiqc                                            [DEBUG  ]  Running Python 3.8.1 (default, Dec 26 2019, 14:42:08)  [GCC 9.2.0]
+[2023-03-09 13:52:20,117] multiqc                                            [DEBUG  ]  Analysing modules: custom_content, ccs, ngsderive, purple, conpair, lima, peddy, somalier, methylQA, mosdepth, phantompeakqualtools, qualimap, preseq, quast, qorts, rna_seqc, rockhopper, rsem, rseqc, busco, bustools, goleft_indexcov, gffcompare, disambiguate, supernova, deeptools, sargasso, verifybamid, mirtrace, happy, mirtop, sambamba, homer, hops, macs2, theta2, snpeff, gatk, htseq, bcftools, featureCounts, fgbio, dragen, dedup, pbmarkdup, damageprofiler, biobambam2, jcvi, mtnucratio, picard, vep, sentieon, prokka, qc3C, nanostat, samblaster, samtools, sexdeterrmine, eigenstratdatabasetools, bamtools, jellyfish, vcftools, longranger, stacks, varscan2, snippy, bbmap, bismark, biscuit, hicexplorer, hicup, hicpro, salmon, kallisto, slamdunk, star, hisat2, tophat, bowtie2, bowtie1, snpsplit, odgi, pangolin, kat, leehom, adapterRemoval, clipandmerge, cutadapt, flexbar, kaiju, kraken, malt, trimmomatic, sickle, skewer, sortmerna, biobloomtools, fastq_screen, afterqc, fastp, fastqc, pychopper, pycoqc, minionqc, multivcfanalyzer, clusterflow, checkqc, bcl2fastq, bclconvert, interop, ivar, flash, seqyclean, optitype, whatshap
+[2023-03-09 13:52:20,117] multiqc                                            [DEBUG  ]  Using temporary directory for creating report: /tmp/tmp0_4karcl
+[2023-03-09 13:52:20,334] multiqc                                            [INFO   ]  Search path : /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastqc
+[2023-03-09 13:52:20,796] multiqc                                            [DEBUG  ]  Summary of files that were skipped by the search: [skipped_module_specific_max_filesize: 24] // [skipped_no_match: 4]
+[2023-03-09 13:52:21,260] multiqc.plots.bargraph                             [DEBUG  ]  Using matplotlib version 3.1.2
+[2023-03-09 13:52:21,261] multiqc.plots.linegraph                            [DEBUG  ]  Using matplotlib version 3.1.2
+[2023-03-09 13:52:21,262] multiqc                                            [DEBUG  ]  No samples found: custom_content
+[2023-03-09 13:52:21,716] multiqc.modules.fastqc.fastqc                      [INFO   ]  Found 4 reports
+[2023-03-09 13:52:21,818] multiqc                                            [INFO   ]  Compressing plot data
+[2023-03-09 13:52:21,964] multiqc                                            [INFO   ]  Report      : multiqc_report.html
+[2023-03-09 13:52:21,964] multiqc                                            [INFO   ]  Data        : multiqc_data
+[2023-03-09 13:52:21,965] multiqc                                            [DEBUG  ]  Moving data file from '/tmp/tmp0_4karcl/multiqc_data' to '/gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/multiqc_data'
+[2023-03-09 13:52:22,131] multiqc                                            [INFO   ]  MultiQC complete
