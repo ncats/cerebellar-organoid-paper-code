@@ -1,0 +1,4 @@
+fastqc /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastq/Undetermined_S0_L001_R1_001.fastq.gz -t 8 -o /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastqc
+fastqc /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastq/Undetermined_S0_L002_R2_001.fastq.gz -t 8 -o /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastqc
+fastqc /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastq/Undetermined_S0_L002_R1_001.fastq.gz -t 8 -o /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastqc
+fastqc /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastq/Undetermined_S0_L001_R2_001.fastq.gz -t 8 -o /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastqc
