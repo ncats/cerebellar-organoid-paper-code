@@ -1,0 +1,30 @@
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM25256_day14/GM25256_day14_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM25256_day14_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM23913_day21/GM23913_day21_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM23913_day21_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM25256_day21/GM25256_day21_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM25256_day21_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM23913_day60/GM23913_day60_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM23913_day60_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM23913_day14/GM23913_day14_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM23913_day14_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/NCRM_day21/NCRM_day21_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/NCRM_day21_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/NCRM_day0/NCRM_day0_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/NCRM_day0_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM23913_day0/GM23913_day0_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM23913_day0_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM25256_day35/GM25256_day35_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM25256_day35_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/NCRM_day14/NCRM_day14_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/NCRM_day14_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM25256_day0/GM25256_day0_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM25256_day0_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM25256_day60/GM25256_day60_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM25256_day60_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/NCRM_day60/NCRM_day60_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/NCRM_day60_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/GM23913_day35/GM23913_day35_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/GM23913_day35_htseq_counts.txt
+
+htseq-count -f bam -r pos -s no -t exon -m union /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/bam/NCRM_day35/NCRM_day35_hg38Aligned.sortedByCoord.out.bam /fdb/GENCODE/Gencode_human/release_39/gencode.v39.annotation.gtf --idattr gene_name > /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/htseq_count/NCRM_day35_htseq_counts.txt
+
