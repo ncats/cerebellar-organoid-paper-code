@@ -1,0 +1,1 @@
+bcl2fastq -p 16 --runfolder-dir ./raw_data/ISB038/ --output-dir /gpfs/gsfs11/users/NCATS_ifx/data/mRNASeq/ISB038/fastq --sample-sheet ./raw_data/ISB038//SampleSheet.csv
