@@ -1,0 +1,222 @@
+16:37:38.279636 git.c:463               trace: built-in: git push origin test_push
+16:37:38.281020 run-command.c:659       trace: run_command: GIT_DIR=.git git remote-https origin https://github.com/ncats/cerebellar-organoid-paper-code.git
+16:37:38.285380 git.c:749               trace: exec: git-remote-https origin https://github.com/ncats/cerebellar-organoid-paper-code.git
+16:37:38.285668 run-command.c:659       trace: run_command: git-remote-https origin https://github.com/ncats/cerebellar-organoid-paper-code.git
+16:37:38.299960 http.c:845              == Info: Couldn't find host github.com in the .netrc file; using defaults
+16:37:38.318072 http.c:845              == Info: Host github.com:443 was resolved.
+16:37:38.318114 http.c:845              == Info: IPv6: (none)
+16:37:38.318121 http.c:845              == Info: IPv4: 140.82.114.3
+16:37:38.318150 http.c:845              == Info:   Trying 140.82.114.3:443...
+16:37:38.333995 http.c:845              == Info: Connected to github.com (140.82.114.3) port 443
+16:37:38.334430 http.c:845              == Info: ALPN: curl offers http/1.1
+16:37:38.334915 http.c:845              == Info: (304) (OUT), TLS handshake, Client hello (1):
+16:37:38.338281 http.c:845              == Info:  CAfile: /etc/ssl/cert.pem
+16:37:38.338289 http.c:845              == Info:  CApath: none
+16:37:38.350840 http.c:845              == Info: (304) (IN), TLS handshake, Server hello (2):
+16:37:38.351221 http.c:845              == Info: (304) (IN), TLS handshake, Unknown (8):
+16:37:38.351351 http.c:845              == Info: (304) (IN), TLS handshake, Certificate (11):
+16:37:38.354466 http.c:845              == Info: (304) (IN), TLS handshake, CERT verify (15):
+16:37:38.354605 http.c:845              == Info: (304) (IN), TLS handshake, Finished (20):
+16:37:38.354658 http.c:845              == Info: (304) (OUT), TLS handshake, Finished (20):
+16:37:38.354667 http.c:845              == Info: SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+16:37:38.354670 http.c:845              == Info: ALPN: server accepted http/1.1
+16:37:38.354673 http.c:845              == Info: Server certificate:
+16:37:38.354677 http.c:845              == Info:  subject: CN=github.com
+16:37:38.354680 http.c:845              == Info:  start date: Mar  6 00:00:00 2026 GMT
+16:37:38.354681 http.c:845              == Info:  expire date: Jun  3 23:59:59 2026 GMT
+16:37:38.354701 http.c:845              == Info:  subjectAltName: host "github.com" matched cert's "github.com"
+16:37:38.354706 http.c:845              == Info:  issuer: C=GB; O=Sectigo Limited; CN=Sectigo Public Server Authentication CA DV E36
+16:37:38.354707 http.c:845              == Info:  SSL certificate verify ok.
+16:37:38.354710 http.c:845              == Info: using HTTP/1.x
+16:37:38.354737 http.c:792              => Send header, 0000000231 bytes (0x000000e7)
+16:37:38.354746 http.c:804              => Send header: GET /ncats/cerebellar-organoid-paper-code.git/info/refs?service=git-receive-pack HTTP/1.1
+16:37:38.354748 http.c:804              => Send header: Host: github.com
+16:37:38.354749 http.c:804              => Send header: User-Agent: git/2.43.0
+16:37:38.354750 http.c:804              => Send header: Accept: */*
+16:37:38.354751 http.c:804              => Send header: Accept-Encoding: deflate, gzip
+16:37:38.354751 http.c:804              => Send header: Accept-Language: en-US, *;q=0.9
+16:37:38.354752 http.c:804              => Send header: Pragma: no-cache
+16:37:38.354753 http.c:804              => Send header:
+16:37:38.354758 http.c:845              == Info: Request completely sent off
+16:37:38.382453 http.c:792              <= Recv header, 0000000027 bytes (0x0000001b)
+16:37:38.382460 http.c:804              <= Recv header: HTTP/1.1 401 Unauthorized
+16:37:38.382464 http.c:792              <= Recv header, 0000000026 bytes (0x0000001a)
+16:37:38.382465 http.c:804              <= Recv header: Server: GitHub-Babel/3.0
+16:37:38.382467 http.c:792              <= Recv header, 0000000054 bytes (0x00000036)
+16:37:38.382468 http.c:804              <= Recv header: Content-Security-Policy: default-src 'none'; sandbox
+16:37:38.382470 http.c:792              <= Recv header, 0000000041 bytes (0x00000029)
+16:37:38.382471 http.c:804              <= Recv header: Content-Type: text/plain; charset=UTF-8
+16:37:38.382473 http.c:792              <= Recv header, 0000000040 bytes (0x00000028)
+16:37:38.382475 http.c:804              <= Recv header: www-authenticate: Basic realm="GitHub"
+16:37:38.382477 http.c:792              <= Recv header, 0000000020 bytes (0x00000014)
+16:37:38.382477 http.c:804              <= Recv header: Content-Length: 26
+16:37:38.382478 http.c:792              <= Recv header, 0000000037 bytes (0x00000025)
+16:37:38.382479 http.c:804              <= Recv header: Date: Fri, 10 Apr 2026 20:37:38 GMT
+16:37:38.382481 http.c:792              <= Recv header, 0000000057 bytes (0x00000039)
+16:37:38.382482 http.c:804              <= Recv header: X-GitHub-Request-Id: E5D3:322E6D:B4C8B3:F2142C:69D95F92
+16:37:38.382483 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:38.382484 http.c:804              <= Recv header: X-Frame-Options: DENY
+16:37:38.382485 http.c:792              <= Recv header, 0000000073 bytes (0x00000049)
+16:37:38.382486 http.c:804              <= Recv header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+16:37:38.382487 http.c:792              <= Recv header, 0000000002 bytes (0x00000002)
+16:37:38.382488 http.c:804              <= Recv header:
+16:37:38.382493 http.c:845              == Info: Connection #0 to host github.com left intact
+16:37:38.382515 run-command.c:659       trace: run_command: 'git credential-osxkeychain get'
+16:37:38.391098 git.c:749               trace: exec: git-credential-osxkeychain get
+16:37:38.391513 run-command.c:659       trace: run_command: git-credential-osxkeychain get
+16:37:38.403481 http.c:845              == Info: Found bundle for host: 0x6000013e84b0 [serially]
+16:37:38.403506 http.c:845              == Info: Re-using existing connection with host github.com
+16:37:38.403517 http.c:845              == Info: Server auth using Basic with user 'inmanjm'
+16:37:38.403579 http.c:792              => Send header, 0000000318 bytes (0x0000013e)
+16:37:38.403587 http.c:804              => Send header: GET /ncats/cerebellar-organoid-paper-code.git/info/refs?service=git-receive-pack HTTP/1.1
+16:37:38.403589 http.c:804              => Send header: Host: github.com
+16:37:38.403590 http.c:804              => Send header: Authorization: Basic <redacted>
+16:37:38.403596 http.c:804              => Send header: User-Agent: git/2.43.0
+16:37:38.403597 http.c:804              => Send header: Accept: */*
+16:37:38.403598 http.c:804              => Send header: Accept-Encoding: deflate, gzip
+16:37:38.403599 http.c:804              => Send header: Accept-Language: en-US, *;q=0.9
+16:37:38.403600 http.c:804              => Send header: Pragma: no-cache
+16:37:38.403601 http.c:804              => Send header:
+16:37:38.403612 http.c:845              == Info: Request completely sent off
+16:37:38.500215 http.c:792              <= Recv header, 0000000017 bytes (0x00000011)
+16:37:38.500258 http.c:804              <= Recv header: HTTP/1.1 200 OK
+16:37:38.500271 http.c:792              <= Recv header, 0000000026 bytes (0x0000001a)
+16:37:38.500277 http.c:804              <= Recv header: Server: GitHub-Babel/3.0
+16:37:38.500290 http.c:792              <= Recv header, 0000000060 bytes (0x0000003c)
+16:37:38.500295 http.c:804              <= Recv header: Content-Type: application/x-git-receive-pack-advertisement
+16:37:38.500306 http.c:792              <= Recv header, 0000000054 bytes (0x00000036)
+16:37:38.500311 http.c:804              <= Recv header: Content-Security-Policy: default-src 'none'; sandbox
+16:37:38.500317 http.c:792              <= Recv header, 0000000040 bytes (0x00000028)
+16:37:38.500325 http.c:804              <= Recv header: expires: Fri, 01 Jan 1980 00:00:00 GMT
+16:37:38.500332 http.c:792              <= Recv header, 0000000018 bytes (0x00000012)
+16:37:38.500336 http.c:804              <= Recv header: pragma: no-cache
+16:37:38.500342 http.c:792              <= Recv header, 0000000053 bytes (0x00000035)
+16:37:38.500346 http.c:804              <= Recv header: Cache-Control: no-cache, max-age=0, must-revalidate
+16:37:38.500352 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:38.500356 http.c:804              <= Recv header: Vary: Accept-Encoding
+16:37:38.500363 http.c:792              <= Recv header, 0000000028 bytes (0x0000001c)
+16:37:38.500368 http.c:804              <= Recv header: Transfer-Encoding: chunked
+16:37:38.500374 http.c:792              <= Recv header, 0000000037 bytes (0x00000025)
+16:37:38.500378 http.c:804              <= Recv header: Date: Fri, 10 Apr 2026 20:37:38 GMT
+16:37:38.500383 http.c:792              <= Recv header, 0000000057 bytes (0x00000039)
+16:37:38.500388 http.c:804              <= Recv header: X-GitHub-Request-Id: E5D3:322E6D:B4C911:F214B0:69D95F92
+16:37:38.500393 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:38.500398 http.c:804              <= Recv header: X-Frame-Options: DENY
+16:37:38.500403 http.c:792              <= Recv header, 0000000073 bytes (0x00000049)
+16:37:38.500412 http.c:804              <= Recv header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+16:37:38.500418 http.c:792              <= Recv header, 0000000002 bytes (0x00000002)
+16:37:38.500423 http.c:804              <= Recv header:
+16:37:38.500520 http.c:845              == Info: Connection #0 to host github.com left intact
+16:37:38.500555 run-command.c:659       trace: run_command: 'git credential-osxkeychain store'
+16:37:38.512405 git.c:749               trace: exec: git-credential-osxkeychain store
+16:37:38.512786 run-command.c:659       trace: run_command: git-credential-osxkeychain store
+16:37:38.528101 pkt-line.c:85           packet:          git< # service=git-receive-pack
+16:37:38.528118 pkt-line.c:85           packet:          git< 0000
+16:37:38.528124 pkt-line.c:85           packet:          git< c9c42c93bcc9d75285fbc6f5cdf0e0bc8c9a94e1 refs/heads/dannyqchen-nih-patch-1\0report-status report-status-v2 delete-refs side-band-64k ofs-delta atomic object-format=sha1 quiet agent=github/spokes-receive-pack-acac8763c60f636c44baaf5c3887895cf5f55c30 session-id=E5D3:322E6D:B4C911:F214B0:69D95F92 push-options
+16:37:38.528139 pkt-line.c:85           packet:          git< d7f9d28b7722c20f1123939c19a06874e9dcf9d3 refs/heads/main
+16:37:38.528142 pkt-line.c:85           packet:          git< 0000
+16:37:38.528244 pkt-line.c:85           packet:          git> refs/heads/test_push:refs/heads/test_push
+16:37:38.528245 pkt-line.c:85           packet:          git> 0000
+16:37:38.528255 run-command.c:659       trace: run_command: git send-pack --stateless-rpc --helper-status --thin --no-progress https://github.com/ncats/cerebellar-organoid-paper-code.git/ --stdin
+16:37:38.532678 git.c:463               trace: built-in: git send-pack --stateless-rpc --helper-status --thin --no-progress https://github.com/ncats/cerebellar-organoid-paper-code.git/ --stdin
+16:37:38.533101 pkt-line.c:85           packet:          git< refs/heads/test_push:refs/heads/test_push
+16:37:38.533107 pkt-line.c:85           packet:          git< 0000
+16:37:38.533109 pkt-line.c:85           packet:          git< c9c42c93bcc9d75285fbc6f5cdf0e0bc8c9a94e1 refs/heads/dannyqchen-nih-patch-1\0report-status report-status-v2 delete-refs side-band-64k ofs-delta atomic object-format=sha1 quiet agent=github/spokes-receive-pack-acac8763c60f636c44baaf5c3887895cf5f55c30 session-id=E5D3:322E6D:B4C911:F214B0:69D95F92 push-options
+16:37:38.533118 pkt-line.c:85           packet:          git< d7f9d28b7722c20f1123939c19a06874e9dcf9d3 refs/heads/main
+16:37:38.533119 pkt-line.c:85           packet:          git< 0000
+16:37:38.534668 pkt-line.c:85           packet:          git> 0000000000000000000000000000000000000000 926d91927962cd65512217330bdec049cc0ec0ac refs/heads/test_push\0 report-status-v2 side-band-64k quiet object-format=sha1 agent=git/2.43.0
+16:37:38.534672 pkt-line.c:85           packet:          git> 0000
+16:37:38.534700 run-command.c:659       trace: run_command: git pack-objects --all-progress-implied --revs --stdout --thin --delta-base-offset -q
+16:37:38.534688 pkt-line.c:85           packet:          git< 00b40000000000000000000000000000000000000000 926d91927962cd65512217330bdec049cc0ec0ac refs/heads/test_push\0 report-status-v2 side-band-64k quiet object-format=sha1 agent=git/2.43.00000
+16:37:38.539771 git.c:463               trace: built-in: git pack-objects --all-progress-implied --revs --stdout --thin --delta-base-offset -q
+16:37:39.689238 pkt-line.c:85           packet:          git< PACK ...
+16:37:39.832265 http.c:845              == Info: Found bundle for host: 0x6000013e84b0 [serially]
+16:37:39.832274 http.c:845              == Info: Re-using existing connection with host github.com
+16:37:39.832281 http.c:845              == Info: Server auth using Basic with user 'inmanjm'
+16:37:39.832373 http.c:792              => Send header, 0000000325 bytes (0x00000145)
+16:37:39.832388 http.c:804              => Send header: POST /ncats/cerebellar-organoid-paper-code.git/git-receive-pack HTTP/1.1
+16:37:39.832397 http.c:804              => Send header: Host: github.com
+16:37:39.832403 http.c:804              => Send header: Authorization: Basic <redacted>
+16:37:39.832404 http.c:804              => Send header: User-Agent: git/2.43.0
+16:37:39.832407 http.c:804              => Send header: Content-Type: application/x-git-receive-pack-request
+16:37:39.832410 http.c:804              => Send header: Accept: application/x-git-receive-pack-result
+16:37:39.832411 http.c:804              => Send header: Content-Length: 4
+16:37:39.832412 http.c:804              => Send header:
+16:37:39.832415 http.c:845              == Info: upload completely sent off: 4 bytes
+16:37:39.910688 http.c:792              <= Recv header, 0000000017 bytes (0x00000011)
+16:37:39.910699 http.c:804              <= Recv header: HTTP/1.1 200 OK
+16:37:39.910703 http.c:792              <= Recv header, 0000000026 bytes (0x0000001a)
+16:37:39.910704 http.c:804              <= Recv header: Server: GitHub-Babel/3.0
+16:37:39.910708 http.c:792              <= Recv header, 0000000053 bytes (0x00000035)
+16:37:39.910711 http.c:804              <= Recv header: Content-Type: application/x-git-receive-pack-result
+16:37:39.910712 http.c:792              <= Recv header, 0000000054 bytes (0x00000036)
+16:37:39.910713 http.c:804              <= Recv header: Content-Security-Policy: default-src 'none'; sandbox
+16:37:39.910714 http.c:792              <= Recv header, 0000000040 bytes (0x00000028)
+16:37:39.910717 http.c:804              <= Recv header: expires: Fri, 01 Jan 1980 00:00:00 GMT
+16:37:39.910718 http.c:792              <= Recv header, 0000000018 bytes (0x00000012)
+16:37:39.910719 http.c:804              <= Recv header: pragma: no-cache
+16:37:39.910720 http.c:792              <= Recv header, 0000000053 bytes (0x00000035)
+16:37:39.910721 http.c:804              <= Recv header: Cache-Control: no-cache, max-age=0, must-revalidate
+16:37:39.910722 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:39.910723 http.c:804              <= Recv header: Vary: Accept-Encoding
+16:37:39.910724 http.c:792              <= Recv header, 0000000019 bytes (0x00000013)
+16:37:39.910725 http.c:804              <= Recv header: Content-Length: 0
+16:37:39.910726 http.c:792              <= Recv header, 0000000037 bytes (0x00000025)
+16:37:39.910727 http.c:804              <= Recv header: Date: Fri, 10 Apr 2026 20:37:39 GMT
+16:37:39.910728 http.c:792              <= Recv header, 0000000057 bytes (0x00000039)
+16:37:39.910729 http.c:804              <= Recv header: X-GitHub-Request-Id: E5D3:322E6D:B4D225:F220C8:69D95F92
+16:37:39.910730 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:39.910731 http.c:804              <= Recv header: X-Frame-Options: DENY
+16:37:39.910732 http.c:792              <= Recv header, 0000000073 bytes (0x00000049)
+16:37:39.910734 http.c:804              <= Recv header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+16:37:39.910736 http.c:792              <= Recv header, 0000000002 bytes (0x00000002)
+16:37:39.910737 http.c:804              <= Recv header:
+16:37:39.910744 http.c:845              == Info: Connection #0 to host github.com left intact
+16:37:39.910772 http.c:845              == Info: Found bundle for host: 0x6000013e84b0 [serially]
+16:37:39.910778 http.c:845              == Info: Re-using existing connection with host github.com
+16:37:39.910783 http.c:845              == Info: Server auth using Basic with user 'inmanjm'
+16:37:39.910831 http.c:792              => Send header, 0000000399 bytes (0x0000018f)
+16:37:39.910835 http.c:804              => Send header: POST /ncats/cerebellar-organoid-paper-code.git/git-receive-pack HTTP/1.1
+16:37:39.910836 http.c:804              => Send header: Host: github.com
+16:37:39.910837 http.c:804              => Send header: Authorization: Basic <redacted>
+16:37:39.910838 http.c:804              => Send header: User-Agent: git/2.43.0
+16:37:39.910839 http.c:804              => Send header: Accept-Encoding: deflate, gzip
+16:37:39.910840 http.c:804              => Send header: Content-Type: application/x-git-receive-pack-request
+16:37:39.910840 http.c:804              => Send header: Accept: application/x-git-receive-pack-result
+16:37:39.910841 http.c:804              => Send header: Accept-Language: en-US, *;q=0.9
+16:37:39.910842 http.c:804              => Send header: Transfer-Encoding: chunked
+16:37:39.910844 http.c:804              => Send header:
+16:37:39.910846 http.c:845              == Info: upload completely sent off: 14 bytes
+16:37:39.997740 http.c:792              <= Recv header, 0000000017 bytes (0x00000011)
+16:37:39.997747 http.c:804              <= Recv header: HTTP/1.1 200 OK
+16:37:39.997751 http.c:792              <= Recv header, 0000000026 bytes (0x0000001a)
+16:37:39.997752 http.c:804              <= Recv header: Server: GitHub-Babel/3.0
+16:37:39.997754 http.c:792              <= Recv header, 0000000053 bytes (0x00000035)
+16:37:39.997755 http.c:804              <= Recv header: Content-Type: application/x-git-receive-pack-result
+16:37:39.997757 http.c:792              <= Recv header, 0000000054 bytes (0x00000036)
+16:37:39.997758 http.c:804              <= Recv header: Content-Security-Policy: default-src 'none'; sandbox
+16:37:39.997759 http.c:792              <= Recv header, 0000000040 bytes (0x00000028)
+16:37:39.997761 http.c:804              <= Recv header: expires: Fri, 01 Jan 1980 00:00:00 GMT
+16:37:39.997762 http.c:792              <= Recv header, 0000000018 bytes (0x00000012)
+16:37:39.997763 http.c:804              <= Recv header: pragma: no-cache
+16:37:39.997764 http.c:792              <= Recv header, 0000000053 bytes (0x00000035)
+16:37:39.997765 http.c:804              <= Recv header: Cache-Control: no-cache, max-age=0, must-revalidate
+16:37:39.997766 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:39.997767 http.c:804              <= Recv header: Vary: Accept-Encoding
+16:37:39.997768 http.c:792              <= Recv header, 0000000028 bytes (0x0000001c)
+16:37:39.997769 http.c:804              <= Recv header: Transfer-Encoding: chunked
+16:37:39.997770 http.c:792              <= Recv header, 0000000037 bytes (0x00000025)
+16:37:39.997771 http.c:804              <= Recv header: Date: Fri, 10 Apr 2026 20:37:40 GMT
+16:37:39.997772 http.c:792              <= Recv header, 0000000057 bytes (0x00000039)
+16:37:39.997773 http.c:804              <= Recv header: X-GitHub-Request-Id: E5D3:322E6D:B4D293:F22178:69D95F93
+16:37:39.997774 http.c:792              <= Recv header, 0000000023 bytes (0x00000017)
+16:37:39.997775 http.c:804              <= Recv header: X-Frame-Options: DENY
+16:37:39.997776 http.c:792              <= Recv header, 0000000073 bytes (0x00000049)
+16:37:39.997777 http.c:804              <= Recv header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+16:37:39.997778 http.c:792              <= Recv header, 0000000002 bytes (0x00000002)
+16:37:39.997779 http.c:804              <= Recv header:
+16:37:39.997792 http.c:845              == Info: Connection #0 to host github.com left intact
+send-pack: unexpected disconnect while reading sideband packet
+16:37:42.993280 pkt-line.c:85           packet:          git> 0000
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
