@@ -1,0 +1,593 @@
+---
+title: "SCTL_ISB038_Seungmi"
+author: "Jason Inman"
+format: html
+editor: visual
+---
+
+```{r, setup, include = FALSE}
+# Set the root dir to the r_project dir for this project
+knitr::opts_knit$set(root.dir = '.../ISB038')
+```
+
+# ISB038 Bulk RNASeq Differential Expression & Analysis
+
+## Background
+
+Run the bulk RNAseq processing pipeline on the data found at: `ncats_sctlraw\NovaSeq_raw\230224_A00898_0027_AHKVKFDRXY`
+
+Requested analysis: 1. Generate a DE test comparing the time points below with only the two normal lines (combined GM25256 & NCRM5).
+
+-   Day0 vs day 14
+-   Day0 vs day 21
+-   Day0 vs day 35
+-   Day0 vs day 60
+
+2.  Filtering out p \< 0.05 and FC \> 2, share with Seungmi the DE test in an MS Excel file (in the excel file, please also provide the FC for each replicate so Seungmi could also plot the data).
+
+3.  Generate a heatmap with the top 15 gene across each time point.
+
+x axis: day 0 14 21 35 60 y axis: Top 15 genes x 5 time points
+
+DE tests should be run on the combined normal cell lines, and on each normal cell line separate from the other.
+
+## Preperation
+
+```{r}
+library(DESeq2)
+library(data.table)
+library(RColorBrewer)
+library(RUVSeq)
+library(stringr)
+library(pheatmap)
+library(apeglm)
+library(ggsci)
+library(dplyr)
+library(xfun)
+```
+
+## Setup z_score function for use in building heatmaps
+
+```{r}
+cal_z_score <- function(x) {
+  (x - mean(x)) / sd(x)
+}
+```
+
+# Part 1: Combined normal timepoint DE
+
+##Loading Data
+
+```{r}
+htseq_files_dir <- file.path(getwd(),'data/htseq_count')
+sampleFiles <- grep( "htseq_count", list.files(htseq_files_dir), value=TRUE)
+# Remove GM23913 for Part 1:
+sampleFiles <- grep("GM23913", sampleFiles, value = TRUE, invert = TRUE )
+filterlist = fread(file.path(getwd(),'/data/genes_to_filter.txt'), header = FALSE)
+```
+
+## Create metadata
+
+-   sampleName is: cellType + timepoint + replicateNumber
+-   sampleCondition is: cellType + timepoint
+-   sampleCellType is: cellType
+-   sampleTime is: timepoint
+
+```{r}
+sampleName      <- sub( "(.*-\\d)_htseq_counts.txt", "\\1", sampleFiles )
+sampleCondition <- sub( "(.*)-\\d_htseq_counts.txt", "\\1", sampleFiles )
+sampleCellType  <- sub( "([^_]*)_.*",                "\\1", sampleFiles )
+sampleTime      <- sub( ".*(day\\d+).*",             "\\1", sampleFiles )
+
+sampleTable <- data.frame( sampleName = sampleName,
+                           fileName   = sampleFiles,
+                           timepoint  = sampleTime,
+                           condition  = sampleCondition,
+                           cellType   = sampleCellType
+                          )
+sampleTable
+sampleTable$timepoint <- factor(sampleTable$timepoint)
+```
+
+## Create initial dds object
+
+```{r}
+ISB038.dds <- DESeqDataSetFromHTSeqCount( sampleTable <- sampleTable,
+                                   directory = htseq_files_dir,
+                                   design= ~ timepoint )
+# Pre-filtering
+keep <- rowSums(counts(ISB038.dds)) >= 10
+dds <- ISB038.dds[keep,]
+
+dds <- DESeq(dds)
+```
+
+## Investigate normalization with RUVseq
+
+```{r}
+spikes <- unique(c('ANAPC5', 'ANAPC15', 'ARID3B', 'ARL10', 'ATXN2', 'C16orf62',
+                   'C3orf49', 'CCAR1', 'CCDC125', 'CCDC90B', 'CHFR', 'DHRSX',
+                   'FRMD8', 'GGA1', 'HERC4', 'MKNK1', 'NASP', 'NME4', 'OTUB1',
+                   'PMF1', 'POLR2B', 'POLR3A', 'POMK', 'PSMA3-AS1', 'PTPN14',
+                   'RAPGEF6', 'REL', 'RRP1', 'RUNDC1', 'SAMD4B', 'SLC4A1AP',
+                   'SLMAP', 'SMARCAL1', 'SNAP29', 'SNRNP200', 'SUPT4H1',
+                   'TBC1D22A', 'THUMPD3-AS1', 'TSPOAP1-AS1', 'TUBGCP2', 'WDTC1',
+                   'ZNF544','C1orf43','CHMP2A','EMC7','GPI','PSMB2','PSMB4',
+                   'RAB7A','REEP5','SNRPD3','VCP','VPS29'))
+
+
+
+sampleFiles <- sampleTable$fileName
+sampleNames <- sampleTable$sampleName
+sampleCondition <- sampleTable$condition
+
+x <- as.factor(sampleCondition)
+colors <- pal_igv("default")(10)
+
+# Original ExpressionSet
+set <- newSeqExpressionSet(as.matrix(counts(dds, normalized=F)),
+                           phenoData = data.frame(x, row.names=c(sampleNames)))
+
+#original normalization
+set_norm <- newSeqExpressionSet(as.matrix(counts(dds, normalized=T)),
+                           phenoData = data.frame(x, row.names=c(sampleNames)))
+
+# Create new set normalized by RuvSeq
+spikes <- spikes[spikes %in% row.names(dds)]
+set2 <- RUVg(set, spikes, k=1)
+```
+
+### normalization comparison plots
+
+Whoa! This clearly shows RUVSeq isn't as good as the default normalization!! Will continue without using the RUVseq normalized data.
+
+```{r}
+# First the RLE (Relative levels of expression)
+par(mfrow=c(1,3))
+plotRLE( set, outline=FALSE, ylim = c(-4,4), col=colors[x] )
+plotRLE( set_norm, outline=FALSE, ylim = c(-4,4), col=colors[x] )
+plotRLE( set2, outline=FALSE, ylim = c(-4,4), col=colors[x] )
+
+# Now the PCA
+plotPCA( set, col=colors[x], cex=1.2 )
+plotPCA( set_norm, col=colors[x], cex=1.2 )
+plotPCA( set2, col=colors[x], cex=1.2 )
+```
+
+## Create DE results
+
+Be sure to filter on adj_pvalue \< 0.05 and lfc \> 2.0 Capture top 15 genes in .csv and heatmap For this part (combined), also add the normalized count values for each replicate.
+
+*NOTE: The commented out lines of code in the following block were used to examine the difference between results with and without lfc shrinkage estimation. From my initial observation, we should move forward with the shrinkage estimation in place. I leave the other code here to make it easier to recreate that data, if desired at a later time.*
+
+```{r}
+# Set up file paths:
+output_dir <- file.path(getwd(),"output/combined_normal")
+
+#convenience variables
+cond1 <- "day0"
+cond2s <- c("day14","day21","day35","day60")
+
+goi_list = c()
+
+normalizedCounts <- as.matrix(counts(dds, normalized = TRUE)) 
+
+for ( cond2 in cond2s ) {
+
+  # Run lfcShrink and show before and after plots.  Use apeglm for lfcShrink
+  # method.  Create lists based on post-shrinkage results.
+  #res <- results( dds, contrast=c("timepoint", cond2, cond1 ))
+  #res <- res[! res@rownames %in% filterlist$V1,]
+  #res <- res[order(-res$log2FoldChange),]
+
+  resLFC <- lfcShrink(dds,
+                      coef = paste0( "timepoint_", cond2, "_vs_", cond1 ),
+                      type = "apeglm")
+  resLFC <- resLFC[! resLFC@rownames %in% filterlist$V1,]
+  
+  # Seungmi asked to remove "ENSG.*" genes
+  resLFC <- resLFC[! grepl( "ENSG", resLFC@rownames), ]
+  
+  resLFC <- resLFC[order(-resLFC$log2FoldChange),]
+
+  # Compare volcano plots for before and after apeglm
+  #par(mfrow=c(1,2))
+  #DESeq2::plotMA(res, ylim=c(-5,5))
+  DESeq2::plotMA(resLFC, ylim=c(-5,5))
+
+  # save DE files at this point
+  df.resLFC <- as.data.frame(resLFC)
+  # Filter on adj pval
+  df.resLFC <- df.resLFC[ df.resLFC$padj < 0.05, ]
+  # Filter on logFold Change
+  df.resLFC <- filter( df.resLFC, abs(log2FoldChange) > 2)
+  
+  # Add columns for normalized counts
+  toMerge <- normalizedCounts[ , grepl( cond1, colnames( normalizedCounts) ) ]
+  toMerge <- cbind( toMerge, normalizedCounts[ , grepl( cond2, colnames( normalizedCounts) ) ])
+  toMerge <- toMerge[ rownames(toMerge) %in% rownames(df.resLFC), ]
+  
+  # fix rownames
+  df.resLFC <- merge( df.resLFC, toMerge, by = 'row.names' )
+  rownames( df.resLFC ) <- df.resLFC$Row.names
+  df.resLFC <- df.resLFC[ , -1 ]
+  
+  df.resLFC <- df.resLFC[order(-df.resLFC$log2FoldChange),]
+
+  
+  filebase <- paste0( cond2, "_vs_", cond1 )
+  filename <- paste0( filebase, "_all.csv" )
+  fwrite( df.resLFC, 
+          file.path( output_dir, filename ),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # grab top 15 at this point, too.
+  top15 <- head( df.resLFC, n = 15 )
+  filename <- paste0( filebase, "_top15.csv" )
+  fwrite( top15,
+          file.path( output_dir, filename),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # Continue to grow goi_list
+  goi_list <- c( goi_list, rownames(top15) )
+
+}
+```
+
+## Create heatmap
+
+```{r}
+# Setup to save  NOTE: havin trouble getting this to work from within a .qmd
+#heatmap_pdf_filename <- "top15_vs_Day0_heatmap.pdf"
+#pdf( file.path( output_dir, heatmap_pdf_filename ) )
+
+
+heatmapValues <- normalizedCounts[goi_list,]
+heatmapData <- t(apply(heatmapValues,1,cal_z_score))
+row.names( heatmapData ) <- make.unique( as.character( row.names( heatmapData )))
+
+row_annotations <- as.data.frame(heatmapData)
+row_annotations$timepoint = c(rep("Day14", 15),
+                              rep("Day21", 15),
+                              rep("Day35", 15),
+                              rep("Day60", 15) )
+row_annotations <- select(row_annotations, timepoint)
+
+pheatmap( heatmapData, 
+          cluster_rows=FALSE, 
+          cluster_cols= FALSE,
+          gaps_row = c(15,30,45),
+          annotation_row = row_annotations,
+          main = "Top 15 genes vs Day0")
+
+#dev.off() # For use after saving plot to pdf.
+
+```
+
+# Part 2: GM25256, only
+
+##Loading Data
+
+```{r}
+htseq_files_dir <- file.path(getwd(),'data/htseq_count')
+sampleFiles <- grep( "htseq_count", list.files(htseq_files_dir), value=TRUE)
+# Keep only GM25256 for Part 2:
+sampleFiles <- grep("GM25256", sampleFiles, value = TRUE, invert = FALSE )
+```
+
+## Create metadata
+
+-   sampleName is: cellType + timepoint + replicateNumber
+-   sampleCondition is: cellType + timepoint
+-   sampleCellType is: cellType
+-   sampleTime is: timepoint
+
+```{r}
+sampleName      <- sub( "(.*-\\d)_htseq_counts.txt", "\\1", sampleFiles )
+sampleCondition <- sub( "(.*)-\\d_htseq_counts.txt", "\\1", sampleFiles )
+sampleCellType  <- sub( "([^_]*)_.*",                "\\1", sampleFiles )
+sampleTime      <- sub( ".*(day\\d+).*",             "\\1", sampleFiles )
+
+sampleTable <- data.frame( sampleName = sampleName,
+                           fileName   = sampleFiles,
+                           timepoint  = sampleTime,
+                           condition  = sampleCondition,
+                           cellType   = sampleCellType
+                          )
+sampleTable
+sampleTable$timepoint <- factor(sampleTable$timepoint)
+```
+
+## Create initial dds object
+
+```{r}
+ISB038.dds <- DESeqDataSetFromHTSeqCount( sampleTable <- sampleTable,
+                                   directory = htseq_files_dir,
+                                   design= ~ timepoint )
+# Pre-filtering
+keep <- rowSums(counts(ISB038.dds)) >= 10
+dds <- ISB038.dds[keep,]
+
+dds <- DESeq(dds)
+```
+
+## Create DE results
+
+Be sure to filter on adj_pvalue \< 0.05 and lfc \> 2.0 Capture top 15 genes in .csv and heatmap
+
+```{r}
+# Set up file paths:
+output_dir <- file.path(getwd(),"output/GM25256")
+
+#convenience variables
+cond1 <- "day0"
+cond2s <- c("day14","day21","day35","day60")
+
+goi_list = c()
+
+normalizedCounts <- as.matrix(counts(dds, normalized = TRUE)) 
+
+for ( cond2 in cond2s ) {
+
+  # Run lfcShrink and show before and after plots.  Use apeglm for lfcShrink
+  # method.  Create lists based on post-shrinkage results.
+  #res <- results( dds, contrast=c("timepoint", cond2, cond1 ))
+  #res <- res[! res@rownames %in% filterlist$V1,]
+  #res <- res[order(-res$log2FoldChange),]
+
+  resLFC <- lfcShrink(dds,
+                      coef = paste0( "timepoint_", cond2, "_vs_", cond1 ),
+                      type = "apeglm")
+  resLFC <- resLFC[! resLFC@rownames %in% filterlist$V1,]
+  
+  # Seungmi asked to remove "ENSG.*" genes
+  resLFC <- resLFC[! grepl( "ENSG", resLFC@rownames), ]
+  
+  resLFC <- resLFC[order(-resLFC$log2FoldChange),]
+
+  # Compare volcano plots for before and after apeglm
+  #par(mfrow=c(1,2))
+  #DESeq2::plotMA(res, ylim=c(-5,5))
+  DESeq2::plotMA(resLFC, ylim=c(-5,5))
+
+  # save DE files at this point
+  df.resLFC <- as.data.frame(resLFC)
+  # Filter on adj pval
+  df.resLFC <- df.resLFC[ df.resLFC$padj < 0.05, ]
+  # Filter on logFold Change
+  df.resLFC <- filter( df.resLFC, abs(log2FoldChange) > 2)
+  
+  # Add columns for normalized counts
+  toMerge <- normalizedCounts[ , grepl( cond1, colnames( normalizedCounts) ) ]
+  toMerge <- cbind( toMerge, normalizedCounts[ , grepl( cond2, colnames( normalizedCounts) ) ])
+  toMerge <- toMerge[ rownames(toMerge) %in% rownames(df.resLFC), ]
+  
+  # fix rownames
+  df.resLFC <- merge( df.resLFC, toMerge, by = 'row.names' )
+  rownames( df.resLFC ) <- df.resLFC$Row.names
+  df.resLFC <- df.resLFC[ , -1 ]
+  
+  df.resLFC <- df.resLFC[order(-df.resLFC$log2FoldChange),]
+
+  
+  filebase <- paste0( cond2, "_vs_", cond1 )
+  filename <- paste0( filebase, "_all.csv" )
+  fwrite( df.resLFC, 
+          file.path( output_dir, filename ),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # grab top 15 at this point, too.
+  top15 <- head( df.resLFC, n = 15 )
+  filename <- paste0( filebase, "_top15.csv" )
+  fwrite( top15,
+          file.path( output_dir, filename),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # Continue to grow goi_list
+  goi_list <- c( goi_list, rownames(top15) )
+
+}
+```
+
+## Create heatmap
+
+```{r}
+# Setup to save  NOTE: havin trouble getting this to work from within a .qmd
+#heatmap_pdf_filename <- "top15_vs_Day0_heatmap.pdf"
+#pdf( file.path( output_dir, heatmap_pdf_filename ), width = 8, height = 10.5  )
+
+normalizedCounts <- as.matrix(counts(dds, normalized = TRUE))
+
+heatmapValues <- normalizedCounts[goi_list,]
+heatmapData <- t(apply(heatmapValues,1,cal_z_score))
+row.names( heatmapData ) <- make.unique( as.character( row.names( heatmapData )))
+
+row_annotations <- as.data.frame(heatmapData)
+row_annotations$timepoint = c(rep("Day14", 15),
+                              rep("Day21", 15),
+                              rep("Day35", 15),
+                              rep("Day60", 15) )
+row_annotations <- select(row_annotations, timepoint)
+
+pheatmap( heatmapData, 
+          cluster_rows=FALSE, 
+          cluster_cols= FALSE,
+          gaps_row = c(15,30,45),
+          annotation_row = row_annotations,
+          main = "Top 15 genes vs Day0")
+
+#dev.off()  # For use after saving plot to pdf.
+
+```
+
+# Part 3: NCRM5, only
+
+##Loading Data
+
+```{r}
+htseq_files_dir <- file.path(getwd(),'data/htseq_count')
+sampleFiles <- grep( "htseq_count", list.files(htseq_files_dir), value=TRUE)
+# Keep only NCRM5 for Part 2:
+sampleFiles <- grep("NCRM", sampleFiles, value = TRUE, invert = FALSE )
+```
+
+## Create metadata
+
+-   sampleName is: cellType + timepoint + replicateNumber
+-   sampleCondition is: cellType + timepoint
+-   sampleCellType is: cellType
+-   sampleTime is: timepoint
+
+```{r}
+sampleName      <- sub( "(.*-\\d)_htseq_counts.txt", "\\1", sampleFiles )
+sampleCondition <- sub( "(.*)-\\d_htseq_counts.txt", "\\1", sampleFiles )
+sampleCellType  <- sub( "([^_]*)_.*",                "\\1", sampleFiles )
+sampleTime      <- sub( ".*(day\\d+).*",             "\\1", sampleFiles )
+
+sampleTable <- data.frame( sampleName = sampleName,
+                           fileName   = sampleFiles,
+                           timepoint  = sampleTime,
+                           condition  = sampleCondition,
+                           cellType   = sampleCellType
+                          )
+sampleTable
+sampleTable$timepoint <- factor(sampleTable$timepoint)
+```
+
+## Create initial dds object
+
+```{r}
+ISB038.dds <- DESeqDataSetFromHTSeqCount( sampleTable <- sampleTable,
+                                   directory = htseq_files_dir,
+                                   design= ~ timepoint )
+# Pre-filtering
+keep <- rowSums(counts(ISB038.dds)) >= 10
+dds <- ISB038.dds[keep,]
+
+dds <- DESeq(dds)
+```
+
+## Create DE results
+
+Be sure to filter on adj_pvalue \< 0.05 and lfc \> 2.0 Capture top 15 genes in .csv and heatmap
+
+```{r}
+# Set up file paths:
+output_dir <- file.path(getwd(),"output/NCRM5")
+
+#convenience variables
+cond1 <- "day0"
+cond2s <- c("day14","day21","day35","day60")
+
+goi_list = c()
+
+normalizedCounts <- as.matrix(counts(dds, normalized = TRUE)) 
+
+for ( cond2 in cond2s ) {
+
+  # Run lfcShrink and show before and after plots.  Use apeglm for lfcShrink
+  # method.  Create lists based on post-shrinkage results.
+  #res <- results( dds, contrast=c("timepoint", cond2, cond1 ))
+  #res <- res[! res@rownames %in% filterlist$V1,]
+  #res <- res[order(-res$log2FoldChange),]
+
+  resLFC <- lfcShrink(dds,
+                      coef = paste0( "timepoint_", cond2, "_vs_", cond1 ),
+                      type = "apeglm")
+  resLFC <- resLFC[! resLFC@rownames %in% filterlist$V1,]
+  
+  # Seungmi asked to remove "ENSG.*" genes
+  resLFC <- resLFC[! grepl( "ENSG", resLFC@rownames), ]
+  
+  resLFC <- resLFC[order(-resLFC$log2FoldChange),]
+
+  # Compare volcano plots for before and after apeglm
+  #par(mfrow=c(1,2))
+  #DESeq2::plotMA(res, ylim=c(-5,5))
+  DESeq2::plotMA(resLFC, ylim=c(-5,5))
+
+  # save DE files at this point
+  df.resLFC <- as.data.frame(resLFC)
+  # Filter on adj pval
+  df.resLFC <- df.resLFC[ df.resLFC$padj < 0.05, ]
+  # Filter on logFold Change
+  df.resLFC <- filter( df.resLFC, abs(log2FoldChange) > 2)
+  
+  # Add columns for normalized counts
+  toMerge <- normalizedCounts[ , grepl( cond1, colnames( normalizedCounts) ) ]
+  toMerge <- cbind( toMerge, normalizedCounts[ , grepl( cond2, colnames( normalizedCounts) ) ])
+  toMerge <- toMerge[ rownames(toMerge) %in% rownames(df.resLFC), ]
+  
+  # fix rownames
+  df.resLFC <- merge( df.resLFC, toMerge, by = 'row.names' )
+  rownames( df.resLFC ) <- df.resLFC$Row.names
+  df.resLFC <- df.resLFC[ , -1 ]
+  
+  df.resLFC <- df.resLFC[order(-df.resLFC$log2FoldChange),]
+
+  
+  filebase <- paste0( cond2, "_vs_", cond1 )
+  filename <- paste0( filebase, "_all.csv" )
+  fwrite( df.resLFC, 
+          file.path( output_dir, filename ),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # grab top 15 at this point, too.
+  top15 <- head( df.resLFC, n = 15 )
+  filename <- paste0( filebase, "_top15.csv" )
+  fwrite( top15,
+          file.path( output_dir, filename),
+          col.names = T,
+          row.names = T,
+          sep = ',' )
+  
+  # Continue to grow goi_list
+  goi_list <- c( goi_list, rownames(top15) )
+
+}
+```
+
+## Create heatmap
+
+```{r}
+# Setup to save  NOTE: havin trouble getting this to work from within a .qmd
+#heatmap_pdf_filename <- "top15_vs_Day0_heatmap.pdf"
+#pdf( file.path( output_dir, heatmap_pdf_filename ), width = 8, height = 10.5  )
+
+normalizedCounts <- as.matrix(counts(dds, normalized = TRUE))
+
+heatmapValues <- normalizedCounts[goi_list,]
+heatmapData <- t(apply(heatmapValues,1,cal_z_score))
+row.names( heatmapData ) <- make.unique( as.character( row.names( heatmapData )))
+
+row_annotations <- as.data.frame(heatmapData)
+row_annotations$timepoint = c(rep("Day14", 15),
+                              rep("Day21", 15),
+                              rep("Day35", 15),
+                              rep("Day60", 15) )
+row_annotations <- select(row_annotations, timepoint)
+
+pheatmap( heatmapData, 
+          cluster_rows=FALSE, 
+          cluster_cols= FALSE,
+          gaps_row = c(15,30,45),
+          annotation_row = row_annotations,
+          main = "Top 15 genes vs Day0")
+
+#dev.off() # For use after saving plot to pdf.
+
+```
+
+```{r}
+session_info()
+```
